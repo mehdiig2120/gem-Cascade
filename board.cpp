@@ -18,6 +18,7 @@ namespace color{
 
 int main(){
     SetConsoleOutputCP(CP_UTF8); // for drawing in terminal
+    SetConsoleCP(CP_UTF8);
     
     srand(time(0)); // using for draw board term of random access by number and shaper array
 
@@ -34,7 +35,38 @@ int main(){
 
     for(int row = 0; row < 8; row++){
         for(int col = 0; col < 8; col++){
-            board[row][col] = (rand() % 5) + 1; // random number
+            
+            while(true) {
+                int number = (rand() % 5) + 1; // random number
+                bool repeat = false;
+
+                // serching for repeat in row
+                if (col >= 4) {
+                    if (board[row][col-1] == number && 
+                        board[row][col-2] == number && 
+                        board[row][col-3] == number && 
+                        board[row][col-4] == number) {
+                        repeat = true; // repeat found
+                    }
+                }
+
+                // seching for repeat in col
+                if (row >= 4) {
+                    if (board[row-1][col] == number && 
+                        board[row-2][col] == number && 
+                        board[row-3][col] == number && 
+                        board[row-4][col] == number) {
+                        repeat = true; // repeat found
+                    }
+                }
+
+                if (!repeat) { // if we can't find any repeat
+                    board[row][col] = number;
+                    break; 
+                }
+                // if we can find a repeat -> another while loop for another drawing
+            }
+
         }
     }
     
