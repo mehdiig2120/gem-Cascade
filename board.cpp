@@ -69,23 +69,30 @@ int main(){
 
         }
     }
-    
 
-    cout << "┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl;
+    cout << "    a   b   c   d   e   f   g   h  " << endl;
+    cout << "  ┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl;
 
-    for(int row = 0; row < 8; row++){
+    for(int row = 0; row<8; row++){
+        cout << row + 1 << " │ ";
+        
         for(int col = 0; col < 8; col++){
             int shapeIndex = board[row][col];
-            cout << "│ " << shapes[shapeIndex] << " "; // give random number and draw shape
-
-        }
-        cout << "│" << endl;
+            if(col < 7){
+                cout << shapes[shapeIndex] << " │ ";
+                }
+            else{
+                cout << shapes[shapeIndex] << " │";
+            }
+            }
+            cout << endl;
+            
+            if(row < 7){
+                cout << "  ├───┼───┼───┼───┼───┼───┼───┼───┤" << endl;// main line
+            }
         
-        if(row < 7){
-            cout << "├───┼───┼───┼───┼───┼───┼───┼───┤" << endl; // main line
-        }
     }
-    cout << "└───┴───┴───┴───┴───┴───┴───┴───┘" << endl; // finall line
+    cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘" << endl; // finall line
     return 0;
 }
 

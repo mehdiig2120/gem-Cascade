@@ -1,5 +1,5 @@
 deadline = 13 Tir
 every day 1 percent!
-.
-
-11 kh
+1month
+dedline cpp = 28 kh
+next = python proj
