@@ -18,9 +18,10 @@ int main(){
         if(input == "4" || input == "Exit"){
             system("cls"); 
             cout << "Good luck. Bye";
+            break;
         }
-        else if (input == "1" || input == "New Game")
-        {   
+        else if (input == "1" || input == "New Game"){
+           
             Sleep(1500);
             system("cls"); 
             string name;
@@ -34,33 +35,41 @@ int main(){
             Board myboard; // making an instance of board!
             cout << "Welcome " << name << "!" << endl;
             myboard.draw();
+            cout << endl;
 
             string f_nut;
             string s_nut;
             string answer;
-            cout << "Do you want play ?(y/n)" << endl;
-            cin >> answer;
+            while (true){
+                cout << "Do you want play ?(y/n)" << endl;
+                cin >> answer;
+                if (answer == "n"){
+                    cout << "Your game will be save" << endl;
+                    // save game
+                    Sleep(2000);
+                    cout << "good by" << endl;
+                    cout << endl;
+                    break;
+                }
 
-            if(answer == "y"){
-                cout << "give me your nut" << endl;
-                cin >> f_nut >> s_nut;
-                Sleep(1000);
-                myboard.swp(f_nut, s_nut);
-
-            } 
-            else{
-                cout << "Your game will be save" << endl;
-                // save game
-                Sleep(2000);
-                cout << "good by";
+                else if(answer == "y"){
+                    cout << "give me your nut (like g7) :" << endl;
+                    cin >> f_nut >> s_nut;
+                    Sleep(1000);
+                    myboard.swp(f_nut, s_nut);
+                    system("cls");
+                    cout << "Welcome " << name << "!" << endl;
+                    myboard.draw();
+                }
+                else{
+                    cout << "Please write correctly (y or n)" << endl;
+                }
             }
-            
-            return 0;
         }
+
         // else if
 
         // else if 
-
         else{
             Sleep(1500);
             system("cls"); 

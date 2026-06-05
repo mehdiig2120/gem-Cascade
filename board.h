@@ -48,21 +48,17 @@ class Board{
                     bool repeat = false;
 
                     // serching for repeat in row
-                    if (col >= 4) {
+                    if (col >= 2) {
                         if (board[row][col-1] == number && 
-                            board[row][col-2] == number && 
-                            board[row][col-3] == number && 
-                            board[row][col-4] == number) {
+                            board[row][col-2] == number) {
                             repeat = true; // repeat found
                         }
                     }
 
                     // seching for repeat in col
-                    if (row >= 4) {
+                    if (row >= 2) {
                         if (board[row-1][col] == number && 
-                            board[row-2][col] == number && 
-                            board[row-3][col] == number && 
-                            board[row-4][col] == number) {
+                            board[row-2][col] == number) {
                             repeat = true; // repeat found
                         }
                     }
@@ -103,19 +99,54 @@ class Board{
         cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘" << endl; // finall line
     }
 
+    bool check_matches(){
+        for(int row =0; row<8; row++){
+            for(int col = 0; col<6; col++){
+                if(board[row][col] != 0 && // my board completed with numbers . this line means it's not empty
+                    board[row][col] == board[row][col + 1]&&
+                    board[row][col] == board[row][col + 2]){
+                        return true;
+                    }
+            }
+        }
+
+        for(int col =0; col<8; col++){
+            for(int row = 0; row<6; row++){
+                if(board[row][col] != 0 &&
+                    board[row][col] == board[row +1][col]&&
+                    board[row][col] == board[row +2][col]){
+                        return true;
+                    }
+            }
+        }
+        return false; // we can't find any matched nuts
+    }
+
+
     void swp(string a, string b){ // like e7
         int cola = a[0] - 'a';
         int colb = b[0] - 'a';
         
         int rowa = a[1] - '1';
-        int rowb = a[2] - '1';
+        int rowb = b[1] - '1';
+
         if(rowa >=0 && rowa < 8 && rowb >= 0 && rowb < 8 && cola >=0 && cola < 8 && colb >=0 && colb <8){
             swap(board[rowa][cola], board[rowb][colb]);
-            // ye if dige mikhad barai harakat mojaz
+            if (check_matches()){
+                cout << "Nice move !" << endl;
+                Sleep(1000);
+            }
+
+            else{
+                swap(board[rowa][cola], board[rowb][colb]);
+                cout << "Can't move ! (not mathced )" << endl;
+                Sleep(1000);
+            }
         }
         else {
             // harakat gheir mojaz
             cout << "Error ! invalid move or incorrect input " << endl; 
+            Sleep(2000);
         }
     }
 }; // ; it's used for class in oop 
