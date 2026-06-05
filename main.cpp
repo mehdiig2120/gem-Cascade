@@ -29,11 +29,32 @@ int main(){
             cout << endl;
             cout << "Loading..." << endl;
             Sleep(3000); //3s
-            system("cls"); // deleta last board and refresh terminal
+            system("cls"); // delete last board and refresh terminal
             cout << endl;
             Board myboard; // making an instance of board!
             cout << "Welcome " << name << "!" << endl;
             myboard.draw();
+
+            string f_nut;
+            string s_nut;
+            string answer;
+            cout << "Do you want play ?(y/n)" << endl;
+            cin >> answer;
+
+            if(answer == "y"){
+                cout << "give me your nut" << endl;
+                cin >> f_nut >> s_nut;
+                Sleep(1000);
+                myboard.swp(f_nut, s_nut);
+
+            } 
+            else{
+                cout << "Your game will be save" << endl;
+                // save game
+                Sleep(2000);
+                cout << "good by";
+            }
+            
             return 0;
         }
         // else if

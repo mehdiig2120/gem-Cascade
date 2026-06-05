@@ -102,7 +102,22 @@ class Board{
         }
         cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘" << endl; // finall line
     }
+
+    void swp(string a, string b){ // like e7
+        int cola = a[0] - 'a';
+        int colb = b[0] - 'a';
+        
+        int rowa = a[1] - '1';
+        int rowb = a[2] - '1';
+        if(rowa >=0 && rowa < 8 && rowb >= 0 && rowb < 8 && cola >=0 && cola < 8 && colb >=0 && colb <8){
+            swap(board[rowa][cola], board[rowb][colb]);
+            // ye if dige mikhad barai harakat mojaz
+        }
+        else {
+            // harakat gheir mojaz
+            cout << "Error ! invalid move or incorrect input " << endl; 
+        }
+    }
 }; // ; it's used for class in oop 
+ 
 
-
-//
