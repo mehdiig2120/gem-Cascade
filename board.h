@@ -80,9 +80,13 @@ class Board{
         }
     }
     void draw(){
+        cout << "                                "<<"                         "  <<"you can use this Power_ups :" << endl;
+        cout << "                                   " << "                      " << "1) use a Bomb with 120 score (3x3) " << endl;
+        cout << "                                   " << "                      " << "2) use a Rocket with 100 score (delete a row or col)" << endl;
+        cout << "                                   " << "                      " << "3) Hint with 70 score" <<endl;
+
         cout << "    a   b   c   d   e   f   g   h  " << endl;
         cout << "  ┌───┬───┬───┬───┬───┬───┬───┬───┐" << endl;
-
         for(int row = 0; row<8; row++){
             cout << row + 1 << " │ ";
             

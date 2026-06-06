@@ -62,15 +62,15 @@ int main(){
                 int second = time_left % 60;
 
 
-                cout << "+-------------------------------------------------+" << endl;
-                cout << "│ player name: " << name << " │ Time Left: " << minute << ":";
+                cout << "+--------------------------------------------+" << endl;
+                cout << "│ player name: " << name << " │ Time: " << minute << ":";
 
                 if (second < 10) {
                     cout << "0";
                 }
 
                 cout << second << " │ Score: 0 │" << endl;
-                cout << "+-------------------------------------------------+" << endl;
+                cout << "+--------------------------------------------+" << endl;
                 cout << endl;
                 myboard.draw();
             
@@ -86,13 +86,47 @@ int main(){
                 }
 
                 else if(answer == "y"){
+                    string answer2 ;
+                    string answer3 ;
+                    string answer4  ;
+                    cout << "Do you want any power_ups ?(y/n)" << endl;
+                    cin >> answer2;
+                    if (answer2 == "y"){
+                        while (true){
+                            cout << "Which one ? (number)" << endl;
+                            cin >> answer3;
+                            if (answer3 == "1"){
+                                // if (score < 120){
+                                // cout << 'your score isn't enough!}
+                                // else{
+                                // using bomb}
+                                break;
+                            }
+                            
+                            if (answer3 == "2"){
+                                //
+                                break;
+                            }
+
+                            if (answer3 == "3"){
+                                //
+                                break;
+                            }
+
+                            else{
+                                Sleep(1500);
+                                cout << "give me a number!" << endl;
+                                cout << endl;
+                            }
+                        }
+                    }
+                    else{
                     cout << "give me your nut (like g7) :" << endl;
                     cin >> f_nut >> s_nut;
                     Sleep(1000);
                     myboard.swp(f_nut, s_nut);
                     system("cls");
-                    cout << "Welcome " << name << "!" << endl;
-                    myboard.draw();
+                    myboard.draw();}
                 }
                 else{
                     cout << "Please write correctly (y or n)" << endl;
