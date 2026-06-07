@@ -37,6 +37,7 @@ int main(){
             Board myboard; // making an instance of board!
             int total_game_time = 120;
             auto start_time = high_resolution_clock::now(); // start time
+            int score = 0;
 
             while (true){
                 auto current_time = high_resolution_clock::now();
@@ -47,8 +48,8 @@ int main(){
                     system("cls");
                     cout << "========================================" << endl;
                     cout << "   Time's up, Game over , " << name << "!" << endl;
+                    cout << "           your score : " << score << endl;
                     cout << "========================================" << endl;
-                    // cout << your score :
                     Sleep(3000);
                     system("cls");
                     break; // back to menu 
@@ -69,7 +70,7 @@ int main(){
                     cout << "0";
                 }
 
-                cout << second << " │ Score: 0 │" << endl;
+                cout << second << " │ Score: " << score << " │"  << endl;
                 cout << "+--------------------------------------------+" << endl;
                 cout << endl;
                 myboard.draw();
@@ -96,20 +97,36 @@ int main(){
                             cout << "Which one ? (number)" << endl;
                             cin >> answer3;
                             if (answer3 == "1"){
-                                // if (score < 120){
-                                // cout << 'your score isn't enough!}
-                                // else{
-                                // using bomb}
+                                if (score < 120){
+                                 cout << "your score isn't enough!"; }
+                                else{
+                                // using bomb
+                                    score -= 120;}
                                 break;
                             }
                             
                             if (answer3 == "2"){
-                                //
+                                if(score < 100)
+                                {
+                                    cout << "your score isn't enough!";
+                                }
+                                else{
+                                    // using rocket
+                                    score -=100;
+                                }
+                            
                                 break;
                             }
 
                             if (answer3 == "3"){
-                                //
+                                 if(score < 70)
+                                {
+                                    cout << "your score isn't enough!";
+                                }
+                                else{
+                                    // using Hint
+                                    score -=70;
+                                }
                                 break;
                             }
 
@@ -124,7 +141,7 @@ int main(){
                     cout << "give me your nut (like g7) :" << endl;
                     cin >> f_nut >> s_nut;
                     Sleep(1000);
-                    myboard.swp(f_nut, s_nut);
+                    myboard.swp(f_nut, s_nut, score);
                     system("cls");
                     myboard.draw();}
                 }

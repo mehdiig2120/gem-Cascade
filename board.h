@@ -142,24 +142,24 @@ class Board{
     // nuts boom !
     bool crush() {
         array<array<bool, 8>, 8> to_crush = {false}; // an matrix with matched nuts
-        bool found = false;
+        int count_crush = 0;
 
         for (int row = 0; row < 8; row++){
             for(int col =0; col <8; col++){
                 if(check_matches(row, col)){
                     to_crush[row][col] = true;
-                    found = true;
                 }
             }
         }
         for (int row = 0; row < 8; row++){
             for(int col =0; col <8; col++){
                 if(to_crush[row][col]){
+                    count_crush++;
                     board[row][col] = 0;
                 }
             }
         }
-        return found; // true -> if we have a matched nuts
+        return count_crush; // true -> if we have a matched nuts it returns the count of macthced nut . it will be using for score
     }
 
     void gravity(){
@@ -187,7 +187,7 @@ class Board{
         }
     }
 
-    void swp(string a, string b){ // like e7
+    void swp(string a, string b,int & score){ // like e7
         int cola = a[0] - 'a';
         int colb = b[0] - 'a';
         
@@ -203,8 +203,13 @@ class Board{
                     cout << "Nice move !" << endl;
                     Sleep(1000);
 
+                    int k = 10;
+                    int nuts_crush = 0;
 
-                    while(crush()){
+                    while(( nuts_crush = crush()) > 0){ // until we have matched nuts 
+                        score += k * nuts_crush;
+                        k*=2;
+
                         system("cls");
                         draw();
                         Sleep(2500);
@@ -216,7 +221,7 @@ class Board{
 
                         fill_board();
                         system("cls");
-                        Sleep(2500);
+                        Sleep(1500);
                     }
                 }
 
