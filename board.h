@@ -139,6 +139,54 @@ class Board{
         return false;
     }
 
+    // nuts boom !
+    bool crush() {
+        array<array<bool, 8>, 8> to_crush = {false}; // an matrix with matched nuts
+        bool found = false;
+
+        for (int row = 0; row < 8; row++){
+            for(int col =0; col <8; col++){
+                if(check_matches(row, col)){
+                    to_crush[row][col] = true;
+                    found = true;
+                }
+            }
+        }
+        for (int row = 0; row < 8; row++){
+            for(int col =0; col <8; col++){
+                if(to_crush[row][col]){
+                    board[row][col] = 0;
+                }
+            }
+        }
+        return found; // true -> if we have a matched nuts
+    }
+
+    void gravity(){
+        for(int col =0; col<8; col++){
+            int empty_row = 7; //  we imagine line 7 is empty!
+            for (int row=7; row>=0; row--){
+                if (board[row][col] != 0){
+                    if(row != empty_row){
+                        board[empty_row][col] = board[row][col];
+                        board[row][col] = 0;
+                    }
+                empty_row--; // line-up now is empty!
+                }
+            }
+        }
+    }
+
+    void fill_board(){ // after gravity we must fill board again
+        for(int row=0; row<8; row++){
+            for(int col=0; col<8; col++){
+                if(board[row][col] == 0){
+                    board[row][col] = (rand() % 5) + 1;
+                }
+            }
+        }
+    }
+
     void swp(string a, string b){ // like e7
         int cola = a[0] - 'a';
         int colb = b[0] - 'a';
@@ -154,6 +202,22 @@ class Board{
                 if (check_matches(rowa, cola) || check_matches(rowb, colb)){
                     cout << "Nice move !" << endl;
                     Sleep(1000);
+
+
+                    while(crush()){
+                        system("cls");
+                        draw();
+                        Sleep(2500);
+
+                        gravity();
+                        system("cls");
+                        draw();
+                        Sleep(2500);
+
+                        fill_board();
+                        system("cls");
+                        Sleep(2500);
+                    }
                 }
 
                 else{ // harekat gheir mojaz
