@@ -140,7 +140,7 @@ class Board{
     }
 
     // nuts boom !
-    bool crush() {
+    int crush() {
         array<array<bool, 8>, 8> to_crush = {false}; // an matrix with matched nuts
         int count_crush = 0;
 
@@ -221,6 +221,7 @@ class Board{
 
                         fill_board();
                         system("cls");
+                        draw();
                         Sleep(1500);
                     }
                 }

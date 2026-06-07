@@ -35,7 +35,7 @@ int main(){
             system("cls"); // delete last board and refresh terminal
             cout << endl;
             Board myboard; // making an instance of board!
-            int total_game_time = 120;
+            int total_game_time = 300;
             auto start_time = high_resolution_clock::now(); // start time
             int score = 0;
 
@@ -94,14 +94,16 @@ int main(){
                     cin >> answer2;
                     if (answer2 == "y"){
                         while (true){
-                            cout << "Which one ? (number)" << endl;
+                            cout << "Which one ? (number, exit = 4)" << endl;
                             cin >> answer3;
                             if (answer3 == "1"){
                                 if (score < 120){
                                  cout << "your score isn't enough!"; }
                                 else{
                                 // using bomb
+                                    cout << "bomb used!" <<endl;
                                     score -= 120;}
+                                Sleep(1000);
                                 break;
                             }
                             
@@ -112,9 +114,10 @@ int main(){
                                 }
                                 else{
                                     // using rocket
+                                    cout << "rocket used!" << endl;
                                     score -=100;
                                 }
-                            
+                                Sleep(1000);
                                 break;
                             }
 
@@ -125,8 +128,14 @@ int main(){
                                 }
                                 else{
                                     // using Hint
+                                    cout << "Hint used" << endl;
                                     score -=70;
                                 }
+                                Sleep(1000);
+                                break;
+                            }
+                            
+                            else if (answer3 == "4"){
                                 break;
                             }
 
@@ -137,13 +146,15 @@ int main(){
                             }
                         }
                     }
-                    else{
+
+                    system("cls");
+                    myboard.draw();
+
                     cout << "give me your nut (like g7) :" << endl;
                     cin >> f_nut >> s_nut;
                     Sleep(1000);
                     myboard.swp(f_nut, s_nut, score);
                     system("cls");
-                    myboard.draw();}
                 }
                 else{
                     cout << "Please write correctly (y or n)" << endl;
