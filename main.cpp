@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <chrono> // for time 
+#include <fstream> // for svaing game
 #include "board.h"
 using namespace std;
 using namespace std::chrono;
@@ -22,11 +23,20 @@ int main(){
             cout << "Good luck. Bye";
             break;
         }
-        else if (input == "1" || input == "New Game"){
+
+        // maghadir avalie bazi
+        string name = "";
+        int score = 0;
+        int total_game_time = 300;
+        Board myboard; // making an instance of board!
+        auto start_time = high_resolution_clock::now(); 
+        bool start_game = false;
+        
+        
+        if (input == "1" || input == "New Game"){
            
             Sleep(1500);
             system("cls"); 
-            string name;
             cout << "Please enter your name : "<< endl;
             cin  >> name;
             cout << endl;
@@ -34,15 +44,97 @@ int main(){
             Sleep(3000); //3s
             system("cls"); // delete last board and refresh terminal
             cout << endl;
-            Board myboard; // making an instance of board!
-            int total_game_time = 300;
-            auto start_time = high_resolution_clock::now(); // start time
-            int score = 0;
+            total_game_time = 300;
+            start_time = high_resolution_clock::now(); // start time
+            score = 0;
+            start_game = true;
+        }
 
-            while (true){
-                auto current_time = high_resolution_clock::now();
-                duration<double> elapsed = current_time - start_time;
-                int time_left = total_game_time - static_cast<int>(elapsed.count());
+        else if(input == "2" || input == "Load Last Game"){
+            ifstream in_file("savegame.txt");
+            if (!in_file.is_open()){
+                system("cls");
+                cout << "please wait" << endl;
+                Sleep(2000);
+                system("cls");
+                cout << "Game is not found ! Back to menu ..." << endl;
+                Sleep(2500);
+                system("cls");
+                continue;
+            }
+
+            in_file >> name;
+            in_file >> score;
+            in_file >> total_game_time;
+
+            myboard.load_game(in_file);
+            in_file.close();
+
+            system("cls");
+            cout << "Loading last game ..." << endl;
+            Sleep(1500);
+
+            start_time = high_resolution_clock::now(); // tanzim zaman last game
+            start_game = true;
+        }
+ 
+        else if (input == "3" || input == "Results"){
+            ifstream in_file("savegame.txt");
+            system("cls");
+
+            if (!in_file.is_open()){
+                cout << "No game was not save yet !" << endl;
+                cout << "Please play a game first then it will be saved" << endl;
+                Sleep(2000);
+            }
+            else{
+            cout << "==============================================" << endl;
+            cout << "               LAST GAME RESULT               " << endl;
+            cout << "==============================================" << endl;
+            
+            string last_name;
+            int last_score;
+            int last_time_left;
+
+            in_file >> last_name;
+            in_file >> last_score;
+            in_file >> last_time_left;
+
+            in_file.close();
+
+            int min = last_time_left / 60;
+            int sec = last_time_left % 60;
+
+            cout << "Player name : " << last_name << endl;
+            cout << "Player score : " << last_score << endl;
+            cout << "Time left : " << last_time_left << "s" <<  endl;
+            } 
+            cout << "==============================================" << endl;
+            cout << endl;
+            cout << "Please press Enter key to back to menu  ";
+
+            // wait untill player press Enter
+            cin.ignore();
+            cin.get();
+
+            system("cls");
+            continue; // back to the menu
+        } 
+
+
+        else{
+            Sleep(1500);
+            system("cls"); 
+            cout << "Invalid answer ! please write number or options name ." << endl;
+            cout << endl;
+            continue;
+        }
+
+        while (start_game){
+
+            auto current_time = high_resolution_clock::now();
+            duration<double> elapsed = current_time - start_time;
+            int time_left = total_game_time - static_cast<int>(elapsed.count());
 
                 if (time_left <= 0) {
                     system("cls");
@@ -63,15 +155,15 @@ int main(){
                 int second = time_left % 60;
 
 
-                cout << "+--------------------------------------------+" << endl;
+                cout << "+-----------------------------------------------+" << endl;
                 cout << "│ player name: " << name << " │ Time: " << minute << ":";
 
                 if (second < 10) {
                     cout << "0";
                 }
 
-                cout << second << " │ Score: " << score << " │"  << endl;
-                cout << "+--------------------------------------------+" << endl;
+                cout << second << " │ Score: " << score << "    │"  << endl;
+                cout << "+-----------------------------------------------+" << endl;
                 cout << endl;
                 myboard.draw();
             
@@ -79,13 +171,19 @@ int main(){
                 cin >> answer;
                 if (answer == "n"){
                     cout << "Saving game ..." << endl;
-                    // save game
+
+                    ofstream out_file("savegame.txt");
+                    if(out_file.is_open()){
+                        out_file << name << "\n" << score << "\n" << time_left << "\n";
+                        myboard.save_game(out_file);
+                        out_file.close();
+                    }
+
                     Sleep(2000);
                     cout << "good by" << endl;
                     cout << endl;
                     break;
                 }
-
                 else if(answer == "y"){
                     string answer2 ;
                     string answer3 ;
@@ -98,7 +196,7 @@ int main(){
                             cin >> answer3;
                             if (answer3 == "1"){
                                 if (score < 120){
-                                 cout << "your score isn't enough!"; }
+                                    cout << "your score isn't enough!"; }
                                 else{
                                 // using bomb
                                     cout << "bomb used!" <<endl;
@@ -122,7 +220,7 @@ int main(){
                             }
 
                             if (answer3 == "3"){
-                                 if(score < 70)
+                                    if(score < 70)
                                 {
                                     cout << "your score isn't enough!";
                                 }
@@ -140,8 +238,8 @@ int main(){
                             }
 
                             else{
-                                Sleep(1500);
                                 cout << "give me a number!" << endl;
+                                Sleep(1500);
                                 cout << endl;
                             }
                         }
@@ -158,20 +256,10 @@ int main(){
                 }
                 else{
                     cout << "Please write correctly (y or n)" << endl;
+                    Sleep(1000);
+                    system("cls");
                 }
             }
         }
-
-        // else if
-
-        // else if 
-        else{
-            Sleep(1500);
-            system("cls"); 
-            cout << "Invalid answer ! please write number or options name ." << endl;
-            cout << endl;
-        }
-        
-    }
     return 0;
 }

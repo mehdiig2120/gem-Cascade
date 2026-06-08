@@ -4,6 +4,7 @@
 #include <string>
 #include <ctime> // for time limit
 #include <cstdlib> // for random access
+#include <fstream> // for saving 
 
 using namespace std;
 
@@ -42,6 +43,24 @@ class Board{
             color::PURPLE + "★" + color::RESET  //  stage 5
         };
         gen_board();
+    }
+
+    void save_game(ofstream& out_file){
+        for(int i = 0; i< 8; i++){
+            for(int j=0; j<8; j++){
+                out_file << board[i][j] << " ";
+            }
+            out_file << "\n";
+        }
+
+    }
+
+    void load_game(ifstream& in_file){
+        for(int i=0; i< 8; i++){
+            for(int j=0; j< 8; j++){
+                in_file >> board[i][j];
+            }
+        }
     }
 
 
