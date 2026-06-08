@@ -109,48 +109,106 @@ class Board{
         cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘" << endl; // finall line
     }
 
-    bool check_matches(int row, int col) {
-        if (row < 0 || row >= 8 || col < 0 || col >= 8 || board[row][col] == 0) return false;
-        //checking match in row
-        if (col >= 2 && board[row][col] == board[row][col-1] && board[row][col] == board[row][col-2]){
-            return true;
-        }
-
-        if (col >= 1 && col <= 6 && board[row][col] == board[row][col-1] && board[row][col] == board[row][col+1]){
-            return true;
-        } 
-
-        if (col <= 5 && board[row][col] == board[row][col+1] && board[row][col] == board[row][col+2]){
-            return true;
-        } 
-        // checking match in col
-        if (row >= 2 && board[row][col] == board[row-1][col] && board[row][col] == board[row-2][col]){
-            return true;
-        }
-
-        if (row >= 1 && row <= 6 && board[row][col] == board[row-1][col] && board[row][col] == board[row+1][col]){
-            return true;
-        } 
-
-        if (row <= 5 && board[row][col] == board[row+1][col] && board[row][col] == board[row+2][col]){
-            return true;
-        }
-
-        return false;
-    }
-
     // nuts boom !
     int crush() {
         array<array<bool, 8>, 8> to_crush = {false}; // an matrix with matched nuts
-        int count_crush = 0;
+        bool match5_triggered = false;
+        int match5_type = 0;
 
+        bool row_match4_triggered[8] = {false};
+        bool col_match4_triggered[8] = {false};
+
+        int count_crush = 0;
+        
+        // checking match 4-5 in row
         for (int row = 0; row < 8; row++){
-            for(int col =0; col <8; col++){
-                if(check_matches(row, col)){
-                    to_crush[row][col] = true;
+            int match_len = 1;
+            for (int col = 0; col < 8; col++){
+                if (col < 7 && board[row][col] == board[row][col + 1] && board[row][col] != 0){
+                    match_len++ ;
+                }
+                else{
+                    if (match_len >= 3){
+                        int type = board[row][col];
+
+                        // label nuts
+                        for(int i = 0; i< match_len; i++){
+                            to_crush[row][col -  i] = true;
+                        }
+                        // 5 nuts match
+                        if (match_len >= 5){
+                            match5_triggered = true;
+                            match5_type = type;
+                        }
+                        else if(match_len == 4){
+                            row_match4_triggered[row] = true; 
+                        }
+                    }
+                    match_len = 1;
                 }
             }
         }
+        // checking 4-5 matched in col
+        for (int col = 0; col < 8; col++){
+            int match_len = 1;
+            for(int row = 0; row < 8; row++){
+                if (row < 7 && board[row][col] == board[row + 1][col] && board[row][col] != 0){
+                    match_len++;
+                }
+
+                else{
+
+                    if(match_len >=3){
+                        int type = board[row][col]; // kind of nuts
+
+                        for(int i =0; i<match_len; i++){
+                            to_crush[row - i ][col] = true;
+                        }
+
+                        if(match_len >=5){
+                            match5_triggered = true;
+                            match5_type = type;
+                        }
+
+                        else if(match_len == 4){
+                            col_match4_triggered[col]  = true;
+                        }
+                    }
+                    match_len = 1;   // after crush nuts 
+                }
+            }
+        }
+
+        // delete every nuts in board
+        if (match5_triggered) {
+            for (int r = 0; r < 8; r++) {
+                for (int c = 0; c < 8; c++) {
+                    if (board[r][c] == match5_type) {
+                        to_crush[r][c] = true;
+                    }
+                }
+            }
+        }
+
+        // match-5 for row
+        for (int r = 0; r < 8; r++) {
+            if (row_match4_triggered[r]) {
+                for (int c = 0; c < 8; c++) {
+                    to_crush[r][c] = true;
+                }
+            }
+        }
+
+        // match-4 for col
+        for (int c = 0; c < 8; c++) {
+            if (col_match4_triggered[c]) {
+                for (int r = 0; r < 8; r++) {
+                    to_crush[r][c] = true;
+                }
+            }
+        }
+
+
         for (int row = 0; row < 8; row++){
             for(int col =0; col <8; col++){
                 if(to_crush[row][col]){
@@ -197,16 +255,22 @@ class Board{
         if(rowa >=0 && rowa < 8 && rowb >= 0 && rowb < 8 && cola >=0 && cola < 8 && colb >=0 && colb <8){
             int row_dif = abs(rowa - rowb);
             int col_dif = abs(cola - colb);
-            if((row_dif == 0 && col_dif == 1) || (row_dif == 1 && col_dif == 0)){
+            
+            // checking the neighborhood
+            if((row_dif == 0 && col_dif == 1) || (row_dif == 1 && col_dif == 0)){ 
+
                 swap(board[rowa][cola], board[rowb][colb]);
-                if (check_matches(rowa, cola) || check_matches(rowb, colb)){
+
+                int nuts_crush = crush(); // checking first crush
+
+                if (nuts_crush > 0){
                     cout << "Nice move !" << endl;
                     Sleep(1000);
 
                     int k = 10;
-                    int nuts_crush = 0;
+                
 
-                    while(( nuts_crush = crush()) > 0){ // until we have matched nuts 
+                    while( nuts_crush  > 0){ // until we have matched nuts 
                         score += k * nuts_crush;
                         k*=2;
 
@@ -223,6 +287,8 @@ class Board{
                         system("cls");
                         draw();
                         Sleep(1500);
+
+                        nuts_crush = crush();
                     }
                 }
 
