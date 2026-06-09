@@ -323,6 +323,90 @@ class Board{
             Sleep(2000);
         }
     }
+
+    void bomb(string nut, int & score){
+
+        int row, col;
+
+        while (true)
+        {
+            int col = nut[0] - 'a';
+            int row = nut[1] - '1';
+            
+            if(row < 0 || row >=8 || col < 0 || col >=8){
+                cout << "Error ! Invalid input  " << endl;
+                cout << "write correctly (like e5) : " << endl;
+                cin >> nut;
+                system("cls");
+                Sleep(2000);
+                draw();
+                continue;
+                }
+
+            if(row == 0 || row == 7 || col == 0 || col == 7){
+                cout << "You can't use bomb because it's on the corner (Must be center !)" << endl;
+                cin >> nut;
+                system("cls");
+                Sleep(2000);
+                draw();
+                continue;
+                }
+            else{
+                Sleep(1500);
+                for(int r = row - 1; r <= row + 1; r++){
+                    for(int c = col -1; c <=col + 1; c++ ){
+                        board[r][c] = 0;
+                    }
+                cout << "Poooofff! bomb used!" <<endl;
+                Sleep(1500);
+
+                }
+                score += 90; // score for delete nuts
+
+                system("cls");
+                draw();
+                Sleep(1500);
+                gravity();
+                system("cls");
+                draw();
+                Sleep(1500);
+                fill_board();
+                system("cls");
+                draw();
+                Sleep(1500);
+
+                // checking matched again
+
+                int nuts_crush = crush();
+                int k = 10;
+
+                while( nuts_crush  > 0){ // until we have matched nuts 
+                    score += k * nuts_crush;
+                    k*=2;
+
+                    system("cls");
+                    draw();
+                    Sleep(2500);
+
+                    gravity();
+                    system("cls");
+                    draw();
+                    Sleep(2500);
+
+                    fill_board();
+                    system("cls");
+                    draw();
+                    Sleep(1500);
+
+                    nuts_crush = crush();
+                }
+                break;   
+            }
+        }
+    }
+    
+    //void rocket(){
+    //  return;
+    //}
 }; // ; it's used for class in oop 
  
-

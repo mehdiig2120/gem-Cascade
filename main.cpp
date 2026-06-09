@@ -172,7 +172,7 @@ int main(){
                 if (answer == "n"){
                     cout << "Saving game ..." << endl;
 
-                    ofstream out_file("savegame.txt");
+                    ofstream out_file("Results.txt");
                     if(out_file.is_open()){
                         out_file << name << "\n" << score << "\n" << time_left << "\n";
                         myboard.save_game(out_file);
@@ -198,11 +198,14 @@ int main(){
                                 if (score < 120){
                                     cout << "your score isn't enough!"; }
                                 else{
-                                // using bomb
-                                    cout << "bomb used!" <<endl;
-                                    score -= 120;}
-                                Sleep(1000);
-                                break;
+                                    score -= 120;
+                                    string nut;
+                                    cout << "Give me your nut : " << endl;
+                                    cin >> nut;
+                                    Sleep(1500);
+                                    myboard.bomb(nut, score);
+                                    Sleep(3000);
+                                break;}
                             }
                             
                             if (answer3 == "2"){
