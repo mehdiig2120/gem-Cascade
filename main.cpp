@@ -51,7 +51,7 @@ int main(){
         }
 
         else if(input == "2" || input == "Load Last Game"){
-            ifstream in_file("savegame.txt");
+            ifstream in_file("Results.txt");
             if (!in_file.is_open()){
                 system("cls");
                 cout << "please wait" << endl;
@@ -79,7 +79,7 @@ int main(){
         }
  
         else if (input == "3" || input == "Results"){
-            ifstream in_file("savegame.txt");
+            ifstream in_file("Result.txt");
             system("cls");
 
             if (!in_file.is_open()){
@@ -102,8 +102,7 @@ int main(){
 
             in_file.close();
 
-            int min = last_time_left / 60;
-            int sec = last_time_left % 60;
+            
 
             cout << "Player name : " << last_name << endl;
             cout << "Player score : " << last_score << endl;
@@ -174,7 +173,7 @@ int main(){
 
                     ofstream out_file("Results.txt");
                     if(out_file.is_open()){
-                        out_file << name << "\n" << score << "\n" << time_left << "\n";
+                        out_file << name << "\n"  << score << "\n" << time_left << "\n";
                         myboard.save_game(out_file);
                         out_file.close();
                     }
@@ -188,81 +187,86 @@ int main(){
                     string answer2 ;
                     string answer3 ;
                     string answer4  ;
-                    cout << "Do you want any power_ups ?(y/n)" << endl;
-                    cin >> answer2;
-                    if (answer2 == "y"){
-                        while (true){
-                            cout << "Which one ? (number, exit = 4)" << endl;
-                            cin >> answer3;
-                            if (answer3 == "1"){
-                                if (score < 120){
-                                    cout << "your score isn't enough!"; }
+                    while (true){
+                        Sleep(1500);
+                        system("cls");
+                        myboard.heder(name, score, time_left);
+                        cout << "Do you want any power_ups ?(y/n)" << endl;
+                        cin >> answer2;
+                        if (answer2 == "y"){
+                                cout << "Which one ? (number, exit = 4)" << endl;
+                                cin >> answer3;
+                                if (answer3 == "1"){
+                                    if (score < 120){
+                                        cout << "your score isn't enough!"; }
+                                    else{
+                                        score -= 120;
+                                        string nut;
+                                        cout << "Give me your nut : " << endl;
+                                        cin >> nut;
+                                        Sleep(1500);
+                                        myboard.bomb(nut, score, name, time_left);
+                                        Sleep(3000);
+                                    }
+                                }
+                                
+                                else if (answer3 == "2"){
+                                    if(score < 100)
+                                    {
+                                        cout << "your score isn't enough!";
+                                    }
+                                    else{
+                                        // using rocket
+                                        cout << "rocket used!" << endl;
+                                        score -=100;
+                                    }
+                                    Sleep(1000);
+                                }
+
+                                else if (answer3 == "3"){
+                                        if(score < 70)
+                                    {
+                                        cout << "your score isn't enough!";
+                                    }
+                                    else{
+                                        // using Hint
+                                        cout << "Hint used" << endl;
+                                        score -=70;
+                                    }
+                                    Sleep(1000);
+                                }
+                                
+                                else if (answer3 == "4"){
+                                    break;
+                                }
+
                                 else{
-                                    score -= 120;
-                                    string nut;
-                                    cout << "Give me your nut : " << endl;
-                                    cin >> nut;
+                                    cout << "give me a number!" << endl;
                                     Sleep(1500);
-                                    myboard.bomb(nut, score);
-                                    Sleep(3000);
-                                break;}
-                            }
-                            
-                            if (answer3 == "2"){
-                                if(score < 100)
-                                {
-                                    cout << "your score isn't enough!";
+                                    cout << endl;
                                 }
-                                else{
-                                    // using rocket
-                                    cout << "rocket used!" << endl;
-                                    score -=100;
-                                }
-                                Sleep(1000);
-                                break;
                             }
-
-                            if (answer3 == "3"){
-                                    if(score < 70)
-                                {
-                                    cout << "your score isn't enough!";
-                                }
-                                else{
-                                    // using Hint
-                                    cout << "Hint used" << endl;
-                                    score -=70;
-                                }
-                                Sleep(1000);
-                                break;
-                            }
-                            
-                            else if (answer3 == "4"){
-                                break;
-                            }
-
-                            else{
-                                cout << "give me a number!" << endl;
-                                Sleep(1500);
-                                cout << endl;
-                            }
+                        else{
+                            break;
                         }
-                    }
 
-                    system("cls");
-                    myboard.draw();
+                        system("cls");
+                        myboard.draw();
+                    }
 
                     cout << "give me your nut (like g7) :" << endl;
                     cin >> f_nut >> s_nut;
                     Sleep(1000);
-                    myboard.swp(f_nut, s_nut, score);
+                    myboard.swp(f_nut, s_nut, score, name, time_left);
                     system("cls");
+                    
                 }
                 else{
                     cout << "Please write correctly (y or n)" << endl;
                     Sleep(1000);
                     system("cls");
                 }
-            }
         }
-    return 0;
+    }
+    return 0; 
 }

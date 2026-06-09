@@ -128,6 +128,20 @@ class Board{
         cout << "  └───┴───┴───┴───┴───┴───┴───┴───┘" << endl; // finall line
     }
 
+    void heder(string name, int score, int time_left) {
+        int minute = time_left / 60;
+        int second = time_left % 60;
+
+        cout << "+-----------------------------------------------+" << endl;
+        cout << "│ player name: " << name << " │ Time: " << minute << ":";
+        if (second < 10) cout << "0";
+        cout << second << " │ Score: " << score << "    │"  << endl;
+        cout << "+-----------------------------------------------+" << endl;
+        cout << endl;
+        draw();
+    }
+
+
     // nuts boom !
     int crush() {
         array<array<bool, 8>, 8> to_crush = {false}; // an matrix with matched nuts
@@ -264,7 +278,7 @@ class Board{
         }
     }
 
-    void swp(string a, string b,int & score){ // like e7
+    void swp(string a, string b,int & score, string name, int time_left){ // like e7
         int cola = a[0] - 'a';
         int colb = b[0] - 'a';
         
@@ -294,17 +308,17 @@ class Board{
                         k*=2;
 
                         system("cls");
-                        draw();
+                        heder(name, score, time_left);
                         Sleep(2500);
 
                         gravity();
                         system("cls");
-                        draw();
+                        heder(name, score, time_left);
                         Sleep(2500);
 
                         fill_board();
                         system("cls");
-                        draw();
+                        heder(name, score, time_left);
                         Sleep(1500);
 
                         nuts_crush = crush();
@@ -324,16 +338,18 @@ class Board{
         }
     }
 
-    void bomb(string nut, int & score){
+    void bomb(string nut, int & score, string name, int time_left){
 
         int row, col;
 
         while (true)
         {
-            int col = nut[0] - 'a';
-            int row = nut[1] - '1';
+            col = nut[0] - 'a';
+            row = nut[1] - '1';
             
             if(row < 0 || row >=8 || col < 0 || col >=8){
+
+                    
                 cout << "Error ! Invalid input  " << endl;
                 cout << "write correctly (like e5) : " << endl;
                 cin >> nut;
@@ -344,7 +360,10 @@ class Board{
                 }
 
             if(row == 0 || row == 7 || col == 0 || col == 7){
+                system("cls");
+                heder(name, score, time_left);
                 cout << "You can't use bomb because it's on the corner (Must be center !)" << endl;
+                cout << "give me a nut again : " << endl;
                 cin >> nut;
                 system("cls");
                 Sleep(2000);
@@ -357,22 +376,28 @@ class Board{
                     for(int c = col -1; c <=col + 1; c++ ){
                         board[r][c] = 0;
                     }
+                }
+                
+                system("cls");
+                heder(name, score, time_left);
                 cout << "Poooofff! bomb used!" <<endl;
                 Sleep(1500);
 
-                }
-                score += 90; // score for delete nuts
+                
+
 
                 system("cls");
-                draw();
+                heder(name, score, time_left);
                 Sleep(1500);
+
                 gravity();
                 system("cls");
-                draw();
+                heder(name, score, time_left);
                 Sleep(1500);
+
                 fill_board();
                 system("cls");
-                draw();
+                heder(name, score, time_left);
                 Sleep(1500);
 
                 // checking matched again
@@ -385,17 +410,17 @@ class Board{
                     k*=2;
 
                     system("cls");
-                    draw();
+                    heder(name, score, time_left);
                     Sleep(2500);
 
                     gravity();
                     system("cls");
-                    draw();
+                    heder(name, score, time_left);
                     Sleep(2500);
 
                     fill_board();
                     system("cls");
-                    draw();
+                    heder(name, score, time_left);
                     Sleep(1500);
 
                     nuts_crush = crush();
