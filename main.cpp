@@ -8,8 +8,7 @@ using namespace std::chrono;
 
 int main(){
     while (true){
-
-        cout << "Welcome new player. select a Option " << endl;
+        cout << color::GREEN << "\nWelcome new player. select a Option " << color::RESET << endl;
         cout << endl;
         cout << "1.New Game" << endl;
         cout << "2.Load Last Game" << endl;
@@ -89,7 +88,7 @@ int main(){
             }
             else{
             cout << "==============================================" << endl;
-            cout << "               LAST GAME RESULT               " << endl;
+            cout << color:: RED << "               LAST GAME RESULT               " << color :: RESET<< endl;
             cout << "==============================================" << endl;
             
             string last_name;

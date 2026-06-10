@@ -442,7 +442,7 @@ class Board{
                 cin >> answerr2;
                 system("cls");
                 Sleep(2000);
-                
+
                 if(answerr2.length() != 1){ // like 2000
                     cout << "pleasa write correctly(1-8)" << endl;
                     Sleep(1500);
@@ -535,5 +535,91 @@ class Board{
 
             nuts_crush = crush();
         }
+    }
+
+
+
+
+    int vojode_harekat(){
+        for(int r = 0; r<8; r++){
+            for(int c =0; c<8; c++){
+                if(board[r][c] != 0 && board[r][c] == board[r][c+1] && board[r][c] == board[r][c+2]){
+                    return 1;
+                }
+            }
+        }    
+        for(int c = 0; c<8; c++){
+            for(int r=0; r<8; r++){
+                if(board[r][c] != 0 && board[r][c] == board[r+1][c] & board[r][c] == board[r+2][c]){
+                    return 1;
+                }
+            }
+        }
+        return 0; // yani agar harakati vojod nadasht mire srogh bor zadan!
+    }
+
+    bool check_harekat(){
+        for(int r =0; r<8; r++){
+            for(int c=0; c<8; c++){
+                if(c<7){
+                    swap(board[r][c], board[r][c+1]); // jabajaii 
+                    int check = vojode_harekat();
+                    swap(board[r][c], board[r][c+1]); // bargashte 
+                    if (check > 0){
+                        return true;
+                    }
+                }
+
+                if(r<7){
+                    swap(board[r][c], board[r+1][c]); // jabajaii 
+                    int check = vojode_harekat();
+                    swap(board[r][c], board[r+1][c+1]); // bargashte 
+                    if (check > 0){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    void shuffle_board(string name, int score, int time_left) { // we push nuts in new space and pull them random in board again
+        system("cls");
+        heder(name, score, time_left);
+        cout << color::YELLOW << "\nNo moves left! Shuffling the board (Method 2)..." << color::RESET << endl;
+        Sleep(2500);
+
+        array<int, 64> box;
+
+        while (true) {
+            int index = 0;
+            for (int r = 0; r < 8; r++) {
+                for (int c = 0; c < 8; c++) {
+                    box[index++] = board[r][c];
+                }
+            }
+
+            int remaining_items = 64;
+            for (int r = 0; r < 8; r++) {
+                for (int c = 0; c < 8; c++) {
+                    int random_idx = rand() % remaining_items;  // making random nuts (like in gen_board func)
+                    board[r][c] = box[random_idx];            
+                    
+                    box[random_idx] = box[remaining_items - 1]; // delete a nut from box for Avoid repetition 
+                    remaining_items--;
+                }
+            }
+            // check for move !
+            if (vojode_harekat() == 0 && check_harekat()) {
+                break;
+            }
+        }
+
+        system("cls");
+        heder(name, score, time_left);
+        cout << color::GREEN << "\nBoard Shuffled successfully! Keep playing." << color::RESET << endl;
+        Sleep(2000);
+        system("cls");
+        heder(name, score, time_left);
     }
 }; // ; it's used for class in oop 
