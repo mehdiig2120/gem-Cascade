@@ -430,8 +430,131 @@ class Board{
         }
     }
     
-    //void rocket(){
-    //  return;
-    //}
+    void rocket(int & score, string name, int time_left){
+        while(true){
+            string answerr;
+            cout << "You want use rocket for row or col (r/c) ?" << endl;
+            cin >> answerr;
+            if(answerr == "r"){
+                string answerr2;
+                cout << "give me  a row :" << endl;
+                cin >> answerr2;
+                system("cls");
+                Sleep(2000);
+                int in_r;
+                in_r = answerr2[0] - '1';
+                for(int c = 0; c<8; c++){
+                    board[in_r][c] = 0;
+                }
+                system("cls");
+                heder(name, score, time_left);
+                cout << "fisssshhh! Rocket used" <<endl;
+                Sleep(1500);
+
+                system("cls");
+                heder(name, score, time_left);
+                Sleep(1500);
+
+                gravity();
+                system("cls");
+                heder(name, score, time_left);
+                Sleep(1500);
+
+                fill_board();
+                system("cls");
+                heder(name, score, time_left);
+                Sleep(1500);
+
+                // checking matched again
+
+                int nuts_crush = crush();
+                int k = 10;
+
+                while( nuts_crush  > 0){ // until we have matched nuts 
+                    score += k * nuts_crush;
+                    k*=2;
+
+                    system("cls");
+                    heder(name, score, time_left);
+                    Sleep(2500);
+
+                    gravity();
+                    system("cls");
+                    heder(name, score, time_left);
+                    Sleep(2500);
+
+                    fill_board();
+                    system("cls");
+                    heder(name, score, time_left);
+                    Sleep(1500);
+
+                    nuts_crush = crush();
+                }
+                break;
+            }
+            else if(answerr == "c"){
+                string answerr3;
+                cout << "give me a col :" << endl;
+                cin >> answerr3;
+                int in_c;
+                in_c  = answerr3[0] - 'a';
+                for(int r =0; r<8; r++){
+                    board[r][in_c] = 0;
+                }
+                system("cls");
+                heder(name, score, time_left);
+                cout << "fisssshhh! Rocket used" <<endl;
+                Sleep(1500);
+
+                
+                system("cls");
+                heder(name, score, time_left);
+                Sleep(1500);
+
+                gravity();
+                system("cls");
+                heder(name, score, time_left);
+                Sleep(1500);
+
+                fill_board();
+                system("cls");
+                heder(name, score, time_left);
+                Sleep(1500);
+
+                // checking matched again
+
+                int nuts_crush = crush();
+                int k = 10;
+
+                while( nuts_crush  > 0){ // until we have matched nuts 
+                    score += k * nuts_crush;
+                    k*=2;
+
+                    system("cls");
+                    heder(name, score, time_left);
+                    Sleep(2500);
+
+                    gravity();
+                    system("cls");
+                    heder(name, score, time_left);
+                    Sleep(2500);
+
+                    fill_board();
+                    system("cls");
+                    heder(name, score, time_left);
+                    Sleep(1500);
+
+                    nuts_crush = crush();
+                }
+                break;
+            }
+            else{
+                cout << "please write correctly" << endl;
+                Sleep(2000);
+                system("cls");
+                draw();
+                continue;
+            }
+        }
+    }
 }; // ; it's used for class in oop 
- 
