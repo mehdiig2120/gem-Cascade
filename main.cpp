@@ -79,7 +79,7 @@ int main(){
         }
  
         else if (input == "3" || input == "Results"){
-            ifstream in_file("Result.txt");
+            ifstream in_file("Results.txt");
             system("cls");
 
             if (!in_file.is_open()){
@@ -198,7 +198,8 @@ int main(){
                                 cin >> answer3;
                                 if (answer3 == "1"){
                                     if (score < 120){
-                                        cout << "your score isn't enough!"; }
+                                        cout << "your score isn't enough!"; 
+                                        Sleep(1500);}
                                     else{
                                         score -= 120;
                                         string nut;
@@ -214,11 +215,15 @@ int main(){
                                     if(score < 100)
                                     {
                                         cout << "your score isn't enough!";
+                                        Sleep(1500);
                                     }
                                     else{
-                                        // using rocket
-                                        cout << "rocket used!" << endl;
+                                        
                                         score -=100;
+                                        Sleep(1500);
+                                        myboard.rocket(score, name, time_left);
+                                        Sleep(3000);
+
                                     }
                                     Sleep(1000);
                                 }
@@ -227,6 +232,7 @@ int main(){
                                         if(score < 70)
                                     {
                                         cout << "your score isn't enough!";
+                                        Sleep(1500);
                                     }
                                     else{
                                         // using Hint

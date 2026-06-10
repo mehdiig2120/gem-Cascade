@@ -162,7 +162,7 @@ class Board{
                 }
                 else{
                     if (match_len >= 3){
-                        int type = board[row][col];
+                        int type = board[row][col - 1];
 
                         // label nuts
                         for(int i = 0; i< match_len; i++){
@@ -192,7 +192,7 @@ class Board{
                 else{
 
                     if(match_len >=3){
-                        int type = board[row][col]; // kind of nuts
+                        int type = board[row - 1][col]; // kind of nuts
 
                         for(int i =0; i<match_len; i++){
                             to_crush[row - i ][col] = true;
@@ -349,7 +349,6 @@ class Board{
             
             if(row < 0 || row >=8 || col < 0 || col >=8){
 
-                    
                 cout << "Error ! Invalid input  " << endl;
                 cout << "write correctly (like e5) : " << endl;
                 cin >> nut;
@@ -357,7 +356,8 @@ class Board{
                 Sleep(2000);
                 draw();
                 continue;
-                }
+
+            }
 
             if(row == 0 || row == 7 || col == 0 || col == 7){
                 system("cls");
@@ -431,120 +431,54 @@ class Board{
     }
     
     void rocket(int & score, string name, int time_left){
+        int in_r , in_c;
         while(true){
             string answerr;
             cout << "You want use rocket for row or col (r/c) ?" << endl;
             cin >> answerr;
             if(answerr == "r"){
                 string answerr2;
-                cout << "give me  a row :" << endl;
+                cout << "give me  a row (1-8) :" << endl;
                 cin >> answerr2;
                 system("cls");
                 Sleep(2000);
-                int in_r;
+                
+                if(answerr2.length() != 1){ // like 2000
+                    cout << "pleasa write correctly(1-8)" << endl;
+                    Sleep(1500);
+                    system("cls");
+                    heder(name, score, time_left);
+                    continue;
+                }
+
                 in_r = answerr2[0] - '1';
+                if(in_r < 0 || in_r >=8){
+                    cout << "Invalid row! Try again." << endl;
+                    Sleep(1500);
+                    system("cls");
+                    heder(name, score, time_left);
+                    continue;
+                }
                 for(int c = 0; c<8; c++){
                     board[in_r][c] = 0;
-                }
-                system("cls");
-                heder(name, score, time_left);
-                cout << "fisssshhh! Rocket used" <<endl;
-                Sleep(1500);
-
-                system("cls");
-                heder(name, score, time_left);
-                Sleep(1500);
-
-                gravity();
-                system("cls");
-                heder(name, score, time_left);
-                Sleep(1500);
-
-                fill_board();
-                system("cls");
-                heder(name, score, time_left);
-                Sleep(1500);
-
-                // checking matched again
-
-                int nuts_crush = crush();
-                int k = 10;
-
-                while( nuts_crush  > 0){ // until we have matched nuts 
-                    score += k * nuts_crush;
-                    k*=2;
-
-                    system("cls");
-                    heder(name, score, time_left);
-                    Sleep(2500);
-
-                    gravity();
-                    system("cls");
-                    heder(name, score, time_left);
-                    Sleep(2500);
-
-                    fill_board();
-                    system("cls");
-                    heder(name, score, time_left);
-                    Sleep(1500);
-
-                    nuts_crush = crush();
                 }
                 break;
             }
             else if(answerr == "c"){
                 string answerr3;
-                cout << "give me a col :" << endl;
+                cout << "give me a col (a-h):" << endl;
                 cin >> answerr3;
-                int in_c;
                 in_c  = answerr3[0] - 'a';
+                if(in_c < 0 || in_c >=8){
+                    cout << "Invalid col! Try again.!" << endl;
+                    Sleep(1500);
+                    system("cls");
+                    heder(name, score, time_left);
+                    continue;
+                }
+
                 for(int r =0; r<8; r++){
                     board[r][in_c] = 0;
-                }
-                system("cls");
-                heder(name, score, time_left);
-                cout << "fisssshhh! Rocket used" <<endl;
-                Sleep(1500);
-
-                
-                system("cls");
-                heder(name, score, time_left);
-                Sleep(1500);
-
-                gravity();
-                system("cls");
-                heder(name, score, time_left);
-                Sleep(1500);
-
-                fill_board();
-                system("cls");
-                heder(name, score, time_left);
-                Sleep(1500);
-
-                // checking matched again
-
-                int nuts_crush = crush();
-                int k = 10;
-
-                while( nuts_crush  > 0){ // until we have matched nuts 
-                    score += k * nuts_crush;
-                    k*=2;
-
-                    system("cls");
-                    heder(name, score, time_left);
-                    Sleep(2500);
-
-                    gravity();
-                    system("cls");
-                    heder(name, score, time_left);
-                    Sleep(2500);
-
-                    fill_board();
-                    system("cls");
-                    heder(name, score, time_left);
-                    Sleep(1500);
-
-                    nuts_crush = crush();
                 }
                 break;
             }
@@ -552,9 +486,54 @@ class Board{
                 cout << "please write correctly" << endl;
                 Sleep(2000);
                 system("cls");
-                draw();
+                heder(name, score, time_left);
                 continue;
             }
+        }
+        system("cls");
+        heder(name, score, time_left);
+        cout << "fisssshhh! Rocket used" <<endl;
+        Sleep(1500);
+
+                
+        system("cls");
+        heder(name, score, time_left);
+        Sleep(1500);
+
+        gravity();
+        system("cls");
+        heder(name, score, time_left);
+        Sleep(1500);
+
+        fill_board();
+        system("cls");
+        heder(name, score, time_left);
+        Sleep(1500);
+
+        // checking matched again
+
+        int nuts_crush = crush();
+        int k = 10;
+
+        while( nuts_crush  > 0){ // until we have matched nuts 
+            score += k * nuts_crush;
+            k*=2;
+
+            system("cls");
+            heder(name, score, time_left);
+            Sleep(2500);
+
+            gravity();
+            system("cls");
+            heder(name, score, time_left);
+            Sleep(2500);
+
+            fill_board();
+            system("cls");
+            heder(name, score, time_left);
+            Sleep(1500);
+
+            nuts_crush = crush();
         }
     }
 }; // ; it's used for class in oop 
