@@ -20,7 +20,7 @@ namespace color{
 class Board{
     public:
         array<array<int, 8>, 8> board; // the size of board is 8x8
-        array<string, 6> shapes;
+        array<string, 7> shapes;
     public:
         Board(){
         SetConsoleOutputCP(CP_UTF8); // for drawing in terminal
@@ -40,7 +40,8 @@ class Board{
             color::GREEN + "▲" + color::RESET,   // stage 2     
             color::YELLOW + "●" + color::RESET,  // stage 3
             color::BLUE + "◆" + color::RESET,   //  stage 4
-            color::PURPLE + "★" + color::RESET  //  stage 5
+            color::PURPLE + "★" + color::RESET,  //  stage 5
+            color::YELLOW +"*" + color::RESET // stage 6 = boom
         };
         gen_board();
     }
@@ -323,6 +324,9 @@ class Board{
 
                         nuts_crush = crush();
                     }
+                    if (!check_harekat()){
+                        shuffle_board(name, score, time_left);
+                    }
                 }
 
                 else{ // harekat gheir mojaz
@@ -424,6 +428,9 @@ class Board{
                     Sleep(1500);
 
                     nuts_crush = crush();
+                }
+                if(!check_harekat()){
+                    shuffle_board(name, score, time_left); // check bombast bad az power_ups
                 }
                 break;   
             }
@@ -534,6 +541,9 @@ class Board{
             Sleep(1500);
 
             nuts_crush = crush();
+        }
+        if (!check_harekat()){
+            shuffle_board(name, score, time_left);
         }
     }
 
