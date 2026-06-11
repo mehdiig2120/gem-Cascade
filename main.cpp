@@ -7,8 +7,10 @@ using namespace std;
 using namespace std::chrono;
 
 int main(){
-
     PlaySound(TEXT("sounds\\menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+
+    mciSendString(TEXT("open \"sounds\\glass-broke.wav\" alias match_sound"), NULL, 0, NULL);
+
     while (true){
 
         cout << color::GREEN << "\nWelcome new player. select a Option " << color::RESET << endl;
@@ -52,11 +54,7 @@ int main(){
             score = 0;
             start_game = true;
 
-            mciSendString(TEXT("stop menu_bgm"), NULL, 0, NULL);
-            mciSendString(TEXT("close menu_bgm"), NULL, 0, NULL);
-
-            mciSendString(TEXT("open \"sounds\\main_musicz.wav\" alias game_bgm"), NULL, 0, NULL);
-            mciSendString(TEXT("play game_bgm repeat"), NULL, 0, NULL);
+            PlaySound(TEXT("sounds\\main_musicz.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
 
         }
@@ -87,11 +85,9 @@ int main(){
 
             start_time = high_resolution_clock::now(); // tanzim zaman last game
             start_game = true;
+            
+            PlaySound(TEXT("sounds\\main_musicz.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 
-            mciSendString(TEXT("stop menu_bgm"), NULL, 0, NULL);
-            mciSendString(TEXT("close menu_bgm"), NULL, 0, NULL);
-            mciSendString(TEXT("open \"sounds\\main_musicz.wav\" alias game_bgm"), NULL, 0, NULL);
-            mciSendString(TEXT("play game_bgm repeat"), NULL, 0, NULL);
         }
  
         else if (input == "3" || input == "Results"){
@@ -155,8 +151,6 @@ int main(){
 
                 if (time_left <= 0) {
                     system("cls");
-                    mciSendString(TEXT("stop game_bgm"), NULL, 0, NULL);
-                    mciSendString(TEXT("close game_bgm"), NULL, 0, NULL);
                     PlaySound(TEXT("sounds\\losing.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     cout << "========================================" << endl;
                     cout << "   Time's up, Game over , " << name << "!" << endl;
@@ -288,10 +282,9 @@ int main(){
                 }
         }
 
-        mciSendString(TEXT("stop game_bgm"), NULL, 0, NULL); // end music
-        mciSendString(TEXT("close game_bgm"), NULL, 0, NULL);
+        PlaySound(TEXT("sounds\\menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP); // end music
         Sleep(200);
-        PlaySound(TEXT("sounds\\menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+        
     }
     return 0; 
 }

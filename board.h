@@ -47,8 +47,18 @@ class Board{
             color::WHITE + "❈" + color::RESET, // stage 6 = boom
             color:: WHITE + "░" + color::RESET //  stage 7 = smoke
         };
+
+        mciSendString(TEXT("open \"sounds\\glass-break.wav\" alias crush_sfx"), NULL, 0, NULL);
+        mciSendString(TEXT("open \"sounds\\explosion.wav\" alias bomb_sfx"), NULL, 0, NULL);
+        mciSendString(TEXT("open \"sounds\\rocket.wav\" alias rocket_sfx"), NULL, 0, NULL);
+
         gen_board();
     }
+    ~Board() { // learn
+            mciSendString(TEXT("close crush_sfx"), NULL, 0, NULL);
+            mciSendString(TEXT("close bomb_sfx"), NULL, 0, NULL);
+            mciSendString(TEXT("close rocket_sfx"), NULL, 0, NULL);
+        }
 
     void save_game(ofstream& out_file){
         for(int i = 0; i< 8; i++){
@@ -263,7 +273,8 @@ class Board{
         if(show_animation){
             if (count_crush > 0){
 
-                PlaySound(TEXT("sounds/glass-break.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
+                mciSendString(TEXT("seek crush_sfx to start"), NULL, 0, NULL);
+                mciSendString(TEXT("play crush_sfx"), NULL, 0, NULL);
 
                 for(int row=0; row<8; row++){
                     for(int col=0; col<8; col++){
@@ -426,7 +437,8 @@ class Board{
                 }
             else{
                 Sleep(1500);
-                PlaySound(TEXT("sounds/explosion.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
+                mciSendString(TEXT("seek bomb_sfx to start"), NULL, 0, NULL);
+                mciSendString(TEXT("play bomb_sfx"), NULL, 0, NULL);
                 for(int r = row - 1; r <= row + 1; r++){
                     for(int c = col -1; c <=col + 1; c++ ){
                         board[r][c] = 0;
@@ -518,7 +530,9 @@ class Board{
                     continue;
                 }
 
-                PlaySound(TEXT("sounds/rocket.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
+
+                mciSendString(TEXT("seek rocket_sfx to start"), NULL, 0, NULL);
+                mciSendString(TEXT("play rocket_sfx"), NULL, 0, NULL);
 
                 for(int c = 0; c<8; c++){
                     board[in_r][c] = 0;
@@ -538,7 +552,8 @@ class Board{
                     continue;
                 }
 
-                PlaySound(TEXT("sounds/rocket.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
+                mciSendString(TEXT("seek rocket_sfx to start"), NULL, 0, NULL);
+                mciSendString(TEXT("play rocket_sfx"), NULL, 0, NULL);
 
                 for(int r =0; r<8; r++){
                     board[r][in_c] = 0;
@@ -667,7 +682,7 @@ class Board{
         }    
         for(int c = 0; c<8; c++){
             for(int r=0; r<6; r++){
-                if(board[r][c] != 0 && board[r][c] == board[r+1][c] & board[r][c] == board[r+2][c]){
+                if(board[r][c] != 0 && board[r][c] == board[r+1][c] && board[r][c] == board[r+2][c]){
                     return 1;
                 }
             }
