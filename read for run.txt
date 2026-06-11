@@ -1,0 +1,2 @@
+first write in (cmd/pwershell) = g++ main.cpp -o name.exe -lwinmm
+then (./name.exe)
