@@ -7,7 +7,10 @@ using namespace std;
 using namespace std::chrono;
 
 int main(){
+
+    PlaySound(TEXT("sounds\\menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     while (true){
+
         cout << color::GREEN << "\nWelcome new player. select a Option " << color::RESET << endl;
         cout << endl;
         cout << "1.New Game" << endl;
@@ -20,13 +23,14 @@ int main(){
         if(input == "4" || input == "Exit"){
             system("cls"); 
             cout << "Good luck. Bye";
+            PlaySound(NULL, 0, 0); // end music
             break;
         }
 
         // maghadir avalie bazi
         string name = "";
         int score = 0;
-        int total_game_time = 300;
+        int total_game_time = 360;
         Board myboard; // making an instance of board!
         auto start_time = high_resolution_clock::now(); 
         bool start_game = false;
@@ -47,6 +51,14 @@ int main(){
             start_time = high_resolution_clock::now(); // start time
             score = 0;
             start_game = true;
+
+            mciSendString(TEXT("stop menu_bgm"), NULL, 0, NULL);
+            mciSendString(TEXT("close menu_bgm"), NULL, 0, NULL);
+
+            mciSendString(TEXT("open \"sounds\\main_musicz.wav\" alias game_bgm"), NULL, 0, NULL);
+            mciSendString(TEXT("play game_bgm repeat"), NULL, 0, NULL);
+
+
         }
 
         else if(input == "2" || input == "Load Last Game"){
@@ -75,6 +87,11 @@ int main(){
 
             start_time = high_resolution_clock::now(); // tanzim zaman last game
             start_game = true;
+
+            mciSendString(TEXT("stop menu_bgm"), NULL, 0, NULL);
+            mciSendString(TEXT("close menu_bgm"), NULL, 0, NULL);
+            mciSendString(TEXT("open \"sounds\\main_musicz.wav\" alias game_bgm"), NULL, 0, NULL);
+            mciSendString(TEXT("play game_bgm repeat"), NULL, 0, NULL);
         }
  
         else if (input == "3" || input == "Results"){
@@ -129,6 +146,8 @@ int main(){
         }
 
         while (start_game){
+            system("cls");
+
 
             auto current_time = high_resolution_clock::now();
             duration<double> elapsed = current_time - start_time;
@@ -136,12 +155,16 @@ int main(){
 
                 if (time_left <= 0) {
                     system("cls");
+                    mciSendString(TEXT("stop game_bgm"), NULL, 0, NULL);
+                    mciSendString(TEXT("close game_bgm"), NULL, 0, NULL);
+                    PlaySound(TEXT("sounds\\losing.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     cout << "========================================" << endl;
                     cout << "   Time's up, Game over , " << name << "!" << endl;
                     cout << "           your score : " << score << endl;
                     cout << "========================================" << endl;
                     Sleep(3000);
                     system("cls");
+                    start_game = false;
                     break; // back to menu 
                 }
             
@@ -153,17 +176,7 @@ int main(){
                 int second = time_left % 60;
 
 
-                cout << "+-----------------------------------------------+" << endl;
-                cout << "│ player name: " << name << " │ Time: " << minute << ":";
-
-                if (second < 10) {
-                    cout << "0";
-                }
-
-                cout << second << " │ Score: " << score << "    │"  << endl;
-                cout << "+-----------------------------------------------+" << endl;
-                cout << endl;
-                myboard.draw();
+                myboard.heder(name, score, time_left);
             
                 cout << "\nDo you want play ?(y/n)" << endl;
                 cin >> answer;
@@ -178,14 +191,15 @@ int main(){
                     }
 
                     Sleep(2000);
-                    cout << "good by" << endl;
+                    cout << "good bye" << endl;
                     cout << endl;
+                    start_game = false;
                     break;
                 }
                 else if(answer == "y"){
                     string answer2 ;
                     string answer3 ;
-                    string answer4  ;
+
                     while (true){
                         Sleep(1000);
                         system("cls");
@@ -257,7 +271,7 @@ int main(){
                         }
 
                         system("cls");
-                        myboard.draw();
+                        myboard.heder(name, score, time_left);
                     }
 
                     cout << "give me two nut (like g7 , g8) :" << endl;
@@ -273,6 +287,11 @@ int main(){
                     system("cls");
                 }
         }
+
+        mciSendString(TEXT("stop game_bgm"), NULL, 0, NULL); // end music
+        mciSendString(TEXT("close game_bgm"), NULL, 0, NULL);
+        Sleep(200);
+        PlaySound(TEXT("sounds\\menu.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
     }
     return 0; 
 }

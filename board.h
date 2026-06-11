@@ -5,7 +5,8 @@
 #include <ctime> // for time limit
 #include <cstdlib> // for random access
 #include <fstream> // for saving 
-
+#include <mmsystem.h> // for music
+#pragma comment(lib, "winmm.lib") // fou music
 using namespace std;
 
 namespace color{   
@@ -16,6 +17,7 @@ namespace color{
     const string BLUE    = "\033[34m";
     const string PURPLE  = "\033[35m";
     const string WHITE   = "\033[37m";
+    const string b_green = "\033[42m";
 }
 
 class Board{
@@ -134,6 +136,10 @@ class Board{
     void heder(string name, int score, int time_left) {
         int minute = time_left / 60;
         int second = time_left % 60;
+
+        cout << color::b_green << "             GEM CASCADE             " << color::RESET << endl;
+        cout << endl;
+        cout << endl;
 
         cout << "+-----------------------------------------------+" << endl;
         cout << "│ player name: " << name << " │ Time: " << minute << ":";
@@ -256,6 +262,9 @@ class Board{
         // showing boom for nuts
         if(show_animation){
             if (count_crush > 0){
+
+                PlaySound(TEXT("sounds/glass-break.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
+
                 for(int row=0; row<8; row++){
                     for(int col=0; col<8; col++){
                         if(to_crush[row][col]){
@@ -417,6 +426,7 @@ class Board{
                 }
             else{
                 Sleep(1500);
+                PlaySound(TEXT("sounds/explosion.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
                 for(int r = row - 1; r <= row + 1; r++){
                     for(int c = col -1; c <=col + 1; c++ ){
                         board[r][c] = 0;
@@ -507,6 +517,9 @@ class Board{
                     heder(name, score, time_left);
                     continue;
                 }
+
+                PlaySound(TEXT("sounds/rocket.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
+
                 for(int c = 0; c<8; c++){
                     board[in_r][c] = 0;
                 }
@@ -524,6 +537,8 @@ class Board{
                     heder(name, score, time_left);
                     continue;
                 }
+
+                PlaySound(TEXT("sounds/rocket.wav"), NULL, SND_FILENAME | SND_ASYNC); // play sound
 
                 for(int r =0; r<8; r++){
                     board[r][in_c] = 0;
