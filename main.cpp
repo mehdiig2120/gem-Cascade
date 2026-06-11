@@ -34,7 +34,7 @@ int main(){
         
         if (input == "1" || input == "New Game"){
            
-            Sleep(1500);
+            Sleep(1000);
             system("cls"); 
             cout << "Please enter your name : "<< endl;
             cin  >> name;
@@ -187,7 +187,7 @@ int main(){
                     string answer3 ;
                     string answer4  ;
                     while (true){
-                        Sleep(1500);
+                        Sleep(1000);
                         system("cls");
                         myboard.heder(name, score, time_left);
                         cout << "Do you want any power_ups ?(y/n)" << endl;

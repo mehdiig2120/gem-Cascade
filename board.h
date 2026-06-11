@@ -15,12 +15,13 @@ namespace color{
     const string YELLOW  = "\033[33m";
     const string BLUE    = "\033[34m";
     const string PURPLE  = "\033[35m";
+    const string WHITE   = "\033[37m";
 }
 
 class Board{
     public:
         array<array<int, 8>, 8> board; // the size of board is 8x8
-        array<string, 7> shapes;
+        array<string, 8> shapes;
     public:
         Board(){
         SetConsoleOutputCP(CP_UTF8); // for drawing in terminal
@@ -41,7 +42,8 @@ class Board{
             color::YELLOW + "●" + color::RESET,  // stage 3
             color::BLUE + "◆" + color::RESET,   //  stage 4
             color::PURPLE + "★" + color::RESET,  //  stage 5
-            color::YELLOW +"*" + color::RESET // stage 6 = boom
+            color::WHITE + "❈" + color::RESET, // stage 6 = boom
+            color:: WHITE + "░" + color::RESET //  stage 7 = smoke
         };
         gen_board();
     }
@@ -247,7 +249,41 @@ class Board{
             for(int col =0; col <8; col++){
                 if(to_crush[row][col]){
                     count_crush++;
-                    board[row][col] = 0;
+                }
+            }
+        }
+        // showing boom for nuts
+        if (count_crush > 0){
+            for(int row=0; row<8; row++){
+                for(int col=0; col<8; col++){
+                    if(to_crush[row][col]){
+                        board[row][col] = 6;
+                    }
+                }
+            }
+
+            system("cls");
+            draw();
+            Sleep(1500); // time of showing
+
+            // showing smoke
+            for(int row=0; row<8; row++){
+                for(int col=0; col<8; col++){
+                    if(to_crush[row][col]){
+                        board[row][col] = 7;
+                    }
+                }
+            }
+            
+            system("cls");
+            draw();
+            Sleep(1500);
+
+            for (int row = 0; row < 8; row++){
+                for(int col =0; col <8; col++){
+                    if(to_crush[row][col]){
+                        board[row][col] = 0 ;
+                    }
                 }
             }
         }
@@ -299,7 +335,7 @@ class Board{
 
                 if (nuts_crush > 0){
                     cout << "Nice move !" << endl;
-                    Sleep(1000);
+                    Sleep(2000);
 
                     int k = 10;
                 
@@ -552,14 +588,14 @@ class Board{
 
     int vojode_harekat(){
         for(int r = 0; r<8; r++){
-            for(int c =0; c<8; c++){
+            for(int c =0; c<6; c++){
                 if(board[r][c] != 0 && board[r][c] == board[r][c+1] && board[r][c] == board[r][c+2]){
                     return 1;
                 }
             }
         }    
         for(int c = 0; c<8; c++){
-            for(int r=0; r<8; r++){
+            for(int r=0; r<6; r++){
                 if(board[r][c] != 0 && board[r][c] == board[r+1][c] & board[r][c] == board[r+2][c]){
                     return 1;
                 }
@@ -583,7 +619,7 @@ class Board{
                 if(r<7){
                     swap(board[r][c], board[r+1][c]); // jabajaii 
                     int check = vojode_harekat();
-                    swap(board[r][c], board[r+1][c+1]); // bargashte 
+                    swap(board[r][c], board[r+1][c]); // bargashte 
                     if (check > 0){
                         return true;
                     }
