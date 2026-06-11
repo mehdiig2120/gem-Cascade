@@ -1,7 +1,7 @@
 # 🎮 Gem Cascade (C++ Console Match-3 Game)
 
 Welcome to **Gem Cascade**, a fully functional, console-based Match-3 puzzle game (inspired by Bejeweled and Candy Crush) written in **C++**. The game features custom UTF-8 graphics, visual animations, cascade physics, sound effects, and power-ups, all running smoothly inside the Windows command prompt.
-
+![Gem Cascade Gameplay](images/gem.png)
 ---
 
 ## ✨ Features
