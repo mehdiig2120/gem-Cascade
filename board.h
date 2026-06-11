@@ -146,7 +146,7 @@ class Board{
 
 
     // nuts boom !
-    int crush() {
+    int crush(bool show_animation = true) {
         array<array<bool, 8>, 8> to_crush = {false}; // an matrix with matched nuts
         bool match5_triggered = false;
         int match5_type = 0;
@@ -252,19 +252,23 @@ class Board{
                 }
             }
         }
+        
         // showing boom for nuts
-        if (count_crush > 0){
-            for(int row=0; row<8; row++){
-                for(int col=0; col<8; col++){
-                    if(to_crush[row][col]){
-                        board[row][col] = 6;
+        if(show_animation){
+            if (count_crush > 0){
+                for(int row=0; row<8; row++){
+                    for(int col=0; col<8; col++){
+                        if(to_crush[row][col]){
+                            board[row][col] = 6;
+                        }
                     }
                 }
             }
-
+        
             system("cls");
             draw();
-            Sleep(1500); // time of showing
+            Sleep(500); // time of showing
+        
 
             // showing smoke
             for(int row=0; row<8; row++){
@@ -277,13 +281,14 @@ class Board{
             
             system("cls");
             draw();
-            Sleep(1500);
+            Sleep(500);
+        }
 
-            for (int row = 0; row < 8; row++){
-                for(int col =0; col <8; col++){
-                    if(to_crush[row][col]){
-                        board[row][col] = 0 ;
-                    }
+
+        for (int row = 0; row < 8; row++){
+            for(int col =0; col <8; col++){
+                if(to_crush[row][col]){
+                    board[row][col] = 0 ;
                 }
             }
         }
@@ -334,7 +339,7 @@ class Board{
                 int nuts_crush = crush(); // checking first crush
 
                 if (nuts_crush > 0){
-                    cout << "Nice move !" << endl;
+                    cout << "\nNice move !" << endl;
                     Sleep(2000);
 
                     int k = 10;
@@ -583,6 +588,57 @@ class Board{
         }
     }
 
+
+    void Hint(){
+        int max_crush = 0;
+        string f_nut = "";
+        string s_nut = "";
+        bool move = false;
+        array <array<int, 8>, 8> vit_board = board ; // import main board to vitural board for avoid repeat 
+
+        for(int r = 0; r<8; r++){
+            for(int c = 0; c<8; c++){
+
+                // checking row
+                if (c<7){
+                    swap(board[r][c], board[r][c+1]);
+                    int now_crush = crush(false); // stop showing animation 
+                    if(now_crush > max_crush){
+                        max_crush = now_crush;
+                        f_nut = string(1, 'a' + c) + to_string(r + 1); // like g7
+                        s_nut = string(1, 'a' + (c+1)) + to_string(r+1);
+                        move = true;
+                    }
+                }
+                board = vit_board; // back to bace shape whitout move any nut
+
+                // checking col
+                if (r<7){
+                    swap(board[r][c], board[r+1][c]);
+                    int now_crush = crush(false); // stop showing animation 
+                    if(now_crush > max_crush){
+                        max_crush = now_crush;
+                        f_nut = string(1, 'a' + c) + to_string(r + 1); // like g7
+                        s_nut = string(1, 'a' + c) + to_string(r+2);
+                        move = true;
+                    }
+                }
+                board = vit_board;
+            }
+        }   
+        cout << "\nSearching ..." << endl;
+        Sleep(2000);
+        if(move){
+            cout << "\nHint : Swap  " << color::GREEN << f_nut << color::RESET << "  with  " << color::GREEN << s_nut << color::RESET <<  "\nYou can broke " << color::RED << max_crush << color::RESET <<" nut !" << endl;
+            }
+
+        else{
+            cout << color::RED << "No matching move found!" << color::RESET << endl;
+            }
+
+        Sleep(5000);
+    }
+    
 
 
 

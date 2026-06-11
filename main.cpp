@@ -165,7 +165,7 @@ int main(){
                 cout << endl;
                 myboard.draw();
             
-                cout << "Do you want play ?(y/n)" << endl;
+                cout << "\nDo you want play ?(y/n)" << endl;
                 cin >> answer;
                 if (answer == "n"){
                     cout << "Saving game ..." << endl;
@@ -190,7 +190,7 @@ int main(){
                         Sleep(1000);
                         system("cls");
                         myboard.heder(name, score, time_left);
-                        cout << "Do you want any power_ups ?(y/n)" << endl;
+                        cout << " \nDo you want any power_ups ?(y/n)" << endl;
                         cin >> answer2;
                         if (answer2 == "y"){
                                 cout << "Which one ? (number, exit = 4)" << endl;
@@ -234,9 +234,10 @@ int main(){
                                         Sleep(1500);
                                     }
                                     else{
-                                        // using Hint
-                                        cout << "Hint used" << endl;
                                         score -=70;
+                                        Sleep(1500);
+                                        myboard.Hint();
+                                        Sleep(3000);
                                     }
                                     Sleep(1000);
                                 }
@@ -259,7 +260,7 @@ int main(){
                         myboard.draw();
                     }
 
-                    cout << "give me your nut (like g7) :" << endl;
+                    cout << "give me two nut (like g7 , g8) :" << endl;
                     cin >> f_nut >> s_nut;
                     Sleep(1000);
                     myboard.swp(f_nut, s_nut, score, name, time_left);
