@@ -151,11 +151,11 @@ class Board{
         cout << endl;
         cout << endl;
 
-        cout << "+-----------------------------------------------+" << endl;
+        cout << "+-------------------------------------------------+" << endl;
         cout << "│ player name: " << name << " │ Time: " << minute << ":";
         if (second < 10) cout << "0";
-        cout << second << " │ Score: " << score << "    │"  << endl;
-        cout << "+-----------------------------------------------+" << endl;
+        cout << second << " │ Score: "<< score <<"     │"  << endl;
+        cout << "+-------------------------------------------------+" << endl;
         cout << endl;
         draw();
     }

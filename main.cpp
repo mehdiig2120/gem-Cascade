@@ -174,6 +174,7 @@ int main(){
             
                 cout << "\nDo you want play ?(y/n)" << endl;
                 cin >> answer;
+                Sleep(1500);
                 if (answer == "n"){
                     cout << "Saving game ..." << endl;
 
@@ -200,13 +201,14 @@ int main(){
                         myboard.heder(name, score, time_left);
                         cout << " \nDo you want any power_ups ?(y/n)" << endl;
                         cin >> answer2;
+                        Sleep(1500);
                         if (answer2 == "y"){
                                 cout << "Which one ? (number, exit = 4)" << endl;
                                 cin >> answer3;
                                 if (answer3 == "1"){
                                     if (score < 120){
                                         cout << "your score isn't enough!"; 
-                                        Sleep(1500);}
+                                        Sleep(2000);}
                                     else{
                                         score -= 120;
                                         string nut;
@@ -222,7 +224,7 @@ int main(){
                                     if(score < 100)
                                     {
                                         cout << "your score isn't enough!";
-                                        Sleep(1500);
+                                        Sleep(2000);
                                     }
                                     else{
                                         
@@ -239,7 +241,7 @@ int main(){
                                         if(score < 70)
                                     {
                                         cout << "your score isn't enough!";
-                                        Sleep(1500);
+                                        Sleep(2000);
                                     }
                                     else{
                                         score -=70;
@@ -277,7 +279,7 @@ int main(){
                 }
                 else{
                     cout << "Please write correctly (y or n)" << endl;
-                    Sleep(1000);
+                    Sleep(1500);
                     system("cls");
                 }
         }
