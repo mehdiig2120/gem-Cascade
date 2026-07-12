@@ -49,7 +49,7 @@ int main(){
             Sleep(3000); //3s
             system("cls"); // delete last board and refresh terminal
             cout << endl;
-            total_game_time = 300;
+            total_game_time = 600;
             start_time = high_resolution_clock::now(); // start time
             score = 0;
             start_game = true;
