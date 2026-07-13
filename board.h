@@ -648,7 +648,7 @@ class Board{
                     int now_crush = crush(false); // stop showing animation 
                     if(now_crush > max_crush){
                         max_crush = now_crush;
-                        f_nut = string(1, 'a' + c) + to_string(r + 1); // like g7
+                        f_nut = string(1, 'a' + c) + to_string(r + 1); // like g7 // 'a' = char
                         s_nut = string(1, 'a' + c) + to_string(r+2);
                         move = true;
                     }
@@ -737,12 +737,12 @@ class Board{
                     int random_idx = rand() % remaining_items;  // making random nuts (like in gen_board func)
                     board[r][c] = box[random_idx];            
                     
-                    box[random_idx] = box[remaining_items - 1]; // delete a nut from box for Avoid repetition 
+                    box[random_idx] = box[remaining_items - 1]; // delete a nut from box for Avoid repetition and replace empty stage by last nuts in box
                     remaining_items--;
                 }
             }
             // check for move !
-            if (vojode_harekat() == 0 && check_harekat()) {
+            if (vojode_harekat() == 0 && check_harekat()) { // mean : if we can't find any 3-matches and we have a move option 
                 break;
             }
         }
